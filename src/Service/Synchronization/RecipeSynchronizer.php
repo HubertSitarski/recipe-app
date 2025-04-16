@@ -81,15 +81,12 @@ class RecipeSynchronizer
      */
     private function processRecipe(array $recipeData): Recipe
     {
-        // Check if recipe already exists
         $recipe = $this->recipeRepository->findOneBy(['externalId' => $recipeData['idMeal']]);
 
         if ($recipe) {
-            // Update existing recipe
             $recipe = $this->recipeDataTransformer->updateEntity($recipe, $recipeData);
             $this->logger->debug('Updated recipe: ' . $recipe->getTitle());
         } else {
-            // Create new recipe
             $recipe = $this->recipeDataTransformer->transformToEntity($recipeData);
             $this->entityManager->persist($recipe);
             $this->logger->debug('Created new recipe: ' . $recipe->getTitle());

@@ -28,7 +28,6 @@ class RecipeDataTransformer
         $recipe->setTags($data['strTags'] ?? null);
         $recipe->setYoutubeUrl($data['strYoutube'] ?? null);
 
-        // Process ingredients
         $this->processIngredients($recipe, $data);
 
         return $recipe;
@@ -56,7 +55,6 @@ class RecipeDataTransformer
             $recipe->removeIngredient($ingredient);
         }
 
-        // Process ingredients
         $this->processIngredients($recipe, $data);
 
         return $recipe;
@@ -78,7 +76,6 @@ class RecipeDataTransformer
             $ingredientName = $data[$ingredientKey] ?? null;
             $measure = $data[$measureKey] ?? null;
 
-            // Skip empty ingredients
             if (empty($ingredientName) || $ingredientName === null || trim($ingredientName) === '') {
                 continue;
             }
