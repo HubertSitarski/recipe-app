@@ -1,8 +1,107 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}My Show Recipe{% endblock %}
+{% block title %}{{ recipe.title }}{% endblock %}
 
 {% block body %}
-    <h1>Show Recipe</h1>
-    <p>This feature will be implemented in task 3.</p>
+    <div class="recipe-detail">
+        <div class="recipe-header">
+            <h1>{{ recipe.title }}</h1>
+
+            <button class="favorite-button"
+                    data-recipe-id="{{ recipe.id }}"
+                    onclick="toggleFavorite({{ recipe.id }})">
+                Add to favorites
+            </button>
+
+            <br>
+            <br>
+
+            <div class="recipe-actions">
+                <a href="{{ path('app_recipe_index') }}" class="back-button">Back to list</a>
+            </div>
+            <br>
+        </div>
+
+        <div class="recipe-content">
+            <div class="recipe-image">
+                {% if recipe.thumbnail %}
+                    <img src="{{ recipe.thumbnail }}" alt="{{ recipe.title }}">
+                {% else %}
+                    <div class="no-image">No image available</div>
+                {% endif %}
+
+                {% if recipe.youtubeUrl %}
+                    <div class="video-link">
+                        <a href="{{ recipe.youtubeUrl }}" target="_blank">
+                            Watch video tutorial
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+
+            <br>
+
+            <div class="recipe-meta">
+                {% if recipe.category %}
+                    <span class="category">Category: {{ recipe.category }}</span>
+                {% endif %}
+
+                <br>
+
+                {% if recipe.area %}
+                    <span class="area">Cuisine: {{ recipe.area }}</span>
+                {% endif %}
+
+                <br>
+
+                {% if recipe.tags %}
+                    <span class="tags">
+                        Tags:
+                        {% set tags = recipe.tags|split(',') %}
+                        {% for tag in tags %}
+                            <span class="tag">{{ tag|trim }}</span>
+                        {% endfor %}
+                    </span>
+                {% endif %}
+            </div>
+
+            <div class="recipe-ingredients">
+                <h2>Ingredients</h2>
+                <ul>
+                    {% for ingredient in recipe.ingredients %}
+                        <li>
+                            <span class="ingredient-name">{{ ingredient.name }}</span>
+                            {% if ingredient.measure %}
+                                <span class="ingredient-measure">{{ ingredient.measure }}</span>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="recipe-instructions">
+                <h2>Instructions</h2>
+                <div class="instructions-text">
+                    {% set paragraphs = recipe.instructions|split('\r\n') %}
+                    {% for paragraph in paragraphs %}
+                        {% if paragraph|trim is not empty %}
+                            <p>{{ paragraph|trim }}</p>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="recipe-comments">
+        {{ include('recipe/_comments.html.twig') }}
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        function toggleFavorite(recipeId) {
+            console.log('Toggle favorite for recipe ID:', recipeId);
+        }
+    </script>
 {% endblock %}
