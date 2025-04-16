@@ -1,0 +1,12 @@
+{{ form_start(search_form) }}
+<div class="search-container">
+    {{ form_widget(search_form.search, {'value': current_search}) }}
+    {{ form_widget(search_form.submit) }}
+</div>
+{% if current_search %}
+    <p class="search-info">
+        Showing results for: "{{ current_search }}"
+        <a href="{{ path('app_recipe_index') }}">Clear search</a>
+    </p>
+{% endif %}
+{{ form_end(search_form) }}
