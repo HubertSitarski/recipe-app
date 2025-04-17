@@ -18,15 +18,22 @@ class RecipeController extends AbstractController
     #[Route('/', name: 'app_recipe_index', methods: ['GET'])]
     public function index(Request $request): Response
     {
-        $search = $request->query->get('search', '');
         $page = max(1, $request->query->getInt('page', 1));
         $limit = $request->query->getInt('limit', 10);
-
+        
         $form = $this->createForm(RecipeSearchType::class, null, [
             'method' => 'GET',
             'csrf_protection' => false,
         ]);
         $form->handleRequest($request);
+        
+        if ($form->isSubmitted() && $form->isValid()) {
+            $formData = $form->getData();
+            $search = $formData['search'] ?? '';
+        } else {
+            // For direct URL access with query parameter or pagination
+            $search = $request->query->get('search', '');
+        }
 
         $result = $this->recipeListingService->getRecipes(
             $search ?: null,

@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\Message\SynchronizeLetterRecipesMessage;
 use App\Message\SynchronizeRecipesMessage;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -75,7 +76,7 @@ class SynchronizeRecipesCommand extends Command
         $io->note(sprintf('Dispatching synchronization for letter "%s"...', $letter));
 
         try {
-            $this->messageBus->dispatch(new \App\Message\SynchronizeLetterRecipesMessage($letter));
+            $this->messageBus->dispatch(new SynchronizeLetterRecipesMessage($letter));
             $io->success(sprintf('Synchronization for letter "%s" dispatched successfully', $letter));
             $io->info('You can run "php bin/console messenger:consume async" to process the queue.');
         } catch (\Exception $e) {

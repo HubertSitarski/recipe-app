@@ -59,7 +59,11 @@
                         Tags:
                         {% set tags = recipe.tags|split(',') %}
                         {% for tag in tags %}
+                            {% if loop.last %}
                             <span class="tag">{{ tag|trim }}</span>
+                            {% else %}
+                            <span class="tag">{{ tag|trim }},</span>
+                            {% endif %}
                         {% endfor %}
                     </span>
                 {% endif %}
@@ -99,9 +103,5 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script>
-        function toggleFavorite(recipeId) {
-            console.log('Toggle favorite for recipe ID:', recipeId);
-        }
-    </script>
+    <script src="{{ asset('js/favorites.js') }}"></script>
 {% endblock %}

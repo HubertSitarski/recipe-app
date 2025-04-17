@@ -2,6 +2,8 @@
 
 namespace App\Service\Synchronization;
 
+use App\DTO\RecipeData;
+use App\DTO\RecipeDataFactory;
 use App\Entity\Recipe;
 use App\Provider\MealProviderInterface;
 use App\Repository\RecipeRepository;
@@ -19,8 +21,9 @@ class RecipeSynchronizer
         private readonly MealProviderInterface $mealProvider,
         private readonly EntityManagerInterface $entityManager,
         private readonly RecipeRepository $recipeRepository,
-        private readonly RecipeDataTransformer $recipeDataTransformer,
+        private readonly RecipeManager $recipeManager,
         private readonly MessageBusInterface $messageBus,
+        private readonly RecipeDataFactory $recipeDataFactory,
         private readonly LoggerInterface $logger
     ) {}
 
@@ -57,13 +60,14 @@ class RecipeSynchronizer
         $count = 0;
 
         foreach ($recipesData as $recipeData) {
+            $recipeDataDTO = $this->recipeDataFactory->createFromSource($recipeData, $this->mealProvider->getSource());
             try {
-                $this->processRecipe($recipeData);
+                $this->processRecipe($recipeDataDTO);
                 $count++;
             } catch (\Exception $e) {
                 $this->logger->error('Error synchronizing recipe: ' . $e->getMessage(), [
-                    'recipe_id' => $recipeData['idMeal'] ?? 'unknown',
-                    'recipe_name' => $recipeData['strMeal'] ?? 'unknown',
+                    'recipe_id' => $recipeDataDTO->getExternalId() ?? 'unknown',
+                    'recipe_name' => $recipeDataDTO->getTitle() ?? 'unknown',
                 ]);
             }
         }
@@ -76,18 +80,18 @@ class RecipeSynchronizer
     /**
      * Process a single recipe - create or update
      *
-     * @param array $recipeData Recipe data from API
+     * @param RecipeData $recipeData Recipe data from API, converted to DTO
      * @return Recipe The processed recipe entity
      */
-    private function processRecipe(array $recipeData): Recipe
+    private function processRecipe(RecipeData $recipeData): Recipe
     {
-        $recipe = $this->recipeRepository->findOneBy(['externalId' => $recipeData['idMeal']]);
+        $recipe = $this->recipeRepository->findOneBy(['externalId' => $recipeData->getExternalId()]);
 
         if ($recipe) {
-            $recipe = $this->recipeDataTransformer->updateEntity($recipe, $recipeData);
+            $recipe = $this->recipeManager->updateEntity($recipe, $recipeData);
             $this->logger->debug('Updated recipe: ' . $recipe->getTitle());
         } else {
-            $recipe = $this->recipeDataTransformer->transformToEntity($recipeData);
+            $recipe = $this->recipeManager->createEntity($recipeData);
             $this->entityManager->persist($recipe);
             $this->logger->debug('Created new recipe: ' . $recipe->getTitle());
         }
