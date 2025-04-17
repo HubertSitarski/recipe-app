@@ -67,7 +67,7 @@ class RecipeIngredientRepositoryTest extends KernelTestCase
         
         $allIngredients = $this->recipeIngredientRepository->findAll();
         
-        $this->assertCount(6, $allIngredients); // 3 ingredients for each recipe
+        $this->assertCount(6, $allIngredients);
     }
 
     private function createRecipeWithIngredients(string $title = 'Test Recipe'): Recipe
