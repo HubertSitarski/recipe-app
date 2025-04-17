@@ -12,9 +12,6 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 use App\Message\SynchronizeLetterRecipesMessage;
 
-/**
- * Service responsible for synchronizing recipes from provider to database
- */
 class RecipeSynchronizer
 {
     public function __construct(
@@ -40,12 +37,6 @@ class RecipeSynchronizer
         $this->logger->info('Dispatched synchronization messages for all alphabet letters');
     }
 
-    /**
-     * Synchronize recipes starting with a specific letter
-     *
-     * @param string $letter The letter to synchronize
-     * @return int Number of recipes synchronized
-     */
     public function synchronizeByLetter(string $letter): int
     {
         $this->logger->info("Starting synchronization for letter: {$letter}");
@@ -78,12 +69,6 @@ class RecipeSynchronizer
         return $count;
     }
 
-    /**
-     * Process a single recipe - create or update
-     *
-     * @param RecipeData $recipeData Recipe data from API, converted to DTO
-     * @return Recipe The processed recipe entity
-     */
     private function processRecipe(RecipeData $recipeData): Recipe
     {
         $recipe = $this->recipeRepository->findOneBy(['externalId' => $recipeData->getExternalId()]);

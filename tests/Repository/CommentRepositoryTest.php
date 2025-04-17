@@ -37,14 +37,11 @@ class CommentRepositoryTest extends KernelTestCase
     
     public function testFindLatestByRecipe(): void
     {
-        // Arrange
         $recipe = $this->createRecipe('Test Recipe');
         $this->createCommentsForRecipe($recipe, 5);
         
-        // Act
         $comments = $this->commentRepository->findLatestByRecipe($recipe->getId(), 3);
         
-        // Assert
         $this->assertCount(3, $comments);
         $this->assertEquals('Comment 5', $comments[0]->getContent());
         $this->assertEquals('Comment 4', $comments[1]->getContent());
@@ -53,27 +50,21 @@ class CommentRepositoryTest extends KernelTestCase
     
     public function testFindLatestByRecipeWithNoComments(): void
     {
-        // Arrange
         $recipe = $this->createRecipe('Recipe Without Comments');
         
-        // Act
         $comments = $this->commentRepository->findLatestByRecipe($recipe->getId());
         
-        // Assert
         $this->assertCount(0, $comments);
         $this->assertEmpty($comments);
     }
     
     public function testFindLatestByRecipeDefaultLimit(): void
     {
-        // Arrange
         $recipe = $this->createRecipe('Recipe with Many Comments');
         $this->createCommentsForRecipe($recipe, 25); // Create 25 comments
         
-        // Act - use default limit of 20
         $comments = $this->commentRepository->findLatestByRecipe($recipe->getId());
         
-        // Assert
         $this->assertCount(20, $comments);
         $this->assertEquals('Comment 25', $comments[0]->getContent()); // Latest first
     }

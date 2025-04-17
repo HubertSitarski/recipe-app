@@ -21,13 +21,11 @@ class RecipeRepositoryTest extends KernelTestCase
             ->getManager();
         $this->recipeRepository = $this->entityManager->getRepository(Recipe::class);
         
-        // Start transaction for each test
         $this->entityManager->beginTransaction();
     }
     
     protected function tearDown(): void
     {
-        // Roll back transaction after each test
         if ($this->entityManager->getConnection()->isTransactionActive()) {
             $this->entityManager->rollback();
         }
@@ -37,7 +35,6 @@ class RecipeRepositoryTest extends KernelTestCase
     
     public function testFindByTitlePaginated(): void
     {
-        // Arrange
         $this->createRecipes([
             'Pasta Carbonara',
             'Tomato Soup',
@@ -46,10 +43,8 @@ class RecipeRepositoryTest extends KernelTestCase
             'Apple Pie'
         ]);
         
-        // Act
         $result = $this->recipeRepository->findByTitlePaginated('Choc');
         
-        // Assert
         $this->assertCount(1, $result['recipes']);
         $this->assertEquals(1, $result['total']);
         $this->assertEquals('Chocolate Cake', $result['recipes'][0]->getTitle());
@@ -57,7 +52,6 @@ class RecipeRepositoryTest extends KernelTestCase
     
     public function testFindByTitlePaginatedWithNoFilter(): void
     {
-        // Arrange
         $recipeNames = [
             'Pasta Carbonara',
             'Tomato Soup',
@@ -65,17 +59,14 @@ class RecipeRepositoryTest extends KernelTestCase
         ];
         $this->createRecipes($recipeNames);
         
-        // Act
         $result = $this->recipeRepository->findByTitlePaginated();
         
-        // Assert
         $this->assertCount(3, $result['recipes']);
         $this->assertEquals(3, $result['total']);
     }
     
     public function testFindByTitlePaginatedWithPagination(): void
     {
-        // Arrange
         $recipeNames = [
             'Pasta Carbonara',
             'Pasta Bolognese',
@@ -85,31 +76,23 @@ class RecipeRepositoryTest extends KernelTestCase
         ];
         $this->createRecipes($recipeNames);
         
-        // Act
         $result = $this->recipeRepository->findByTitlePaginated('Pasta', 1, 2);
         
-        // Assert
         $this->assertCount(2, $result['recipes']);
         $this->assertEquals(3, $result['total']); // 3 pasta recipes total
     }
     
     public function testFindWithRelations(): void
     {
-        // Arrange
         $recipe = $this->createRecipeWithIngredients();
         
-        // Act
         $foundRecipe = $this->recipeRepository->findWithRelations($recipe->getId());
 
-        // Assert
         $this->assertNotNull($foundRecipe);
         $this->assertEquals($recipe->getId(), $foundRecipe->getId());
         $this->assertCount(2, $foundRecipe->getIngredients());
     }
-    
-    /**
-     * Helper method to create multiple recipes
-     */
+
     private function createRecipes(array $titles): void
     {
         foreach ($titles as $title) {
@@ -122,10 +105,7 @@ class RecipeRepositoryTest extends KernelTestCase
         
         $this->entityManager->flush();
     }
-    
-    /**
-     * Helper method to create a recipe with ingredients
-     */
+
     private function createRecipeWithIngredients(): Recipe
     {
         $recipe = new Recipe();

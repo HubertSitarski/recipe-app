@@ -4,11 +4,7 @@ namespace App\Service\Synchronization;
 
 use App\DTO\RecipeData;
 use App\Entity\Recipe;
-use App\Entity\RecipeIngredient;
 
-/**
- * Transforms data from API into Doctrine entities
- */
 class RecipeManager
 {
     public function __construct(
@@ -16,12 +12,6 @@ class RecipeManager
     ) {
     }
 
-    /**
-     * Transform API data to Recipe entity
-     *
-     * @param RecipeData $data API data converted to DTO
-     * @return Recipe
-     */
     public function createEntity(RecipeData $data): Recipe
     {
         $recipe = new Recipe();
@@ -34,13 +24,6 @@ class RecipeManager
         return $recipe;
     }
 
-    /**
-     * Update an existing recipe entity with new data
-     *
-     * @param Recipe $recipe The recipe entity to update
-     * @param RecipeData $data API data converted to DTO
-     * @return Recipe Updated recipe
-     */
     public function updateEntity(Recipe $recipe, RecipeData $data): Recipe
     {
         $this->setEntityProperties($recipe, $data);

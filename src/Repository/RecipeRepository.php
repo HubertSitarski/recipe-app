@@ -57,12 +57,6 @@ class RecipeRepository extends ServiceEntityRepository
         ];
     }
 
-    /**
-     * Find recipe with all relations loaded
-     *
-     * @param int $id Recipe ID
-     * @return Recipe|null
-     */
     public function findWithRelations(int $id): ?Recipe
     {
         return $this->createQueryBuilder('r')

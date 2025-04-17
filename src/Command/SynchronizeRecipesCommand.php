@@ -16,7 +16,7 @@ use Symfony\Component\Scheduler\Attribute\AsPeriodicTask;
     name: 'app:recipes:synchronize',
     description: 'Synchronize recipes from TheMealDB API',
 )]
-#[AsPeriodicTask('20 seconds', schedule: 'default')]
+#[AsPeriodicTask('1 hour', schedule: 'default')]
 class SynchronizeRecipesCommand extends Command
 {
     public function __construct(

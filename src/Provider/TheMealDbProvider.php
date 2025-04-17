@@ -29,13 +29,6 @@ class TheMealDbProvider implements MealProviderInterface
         return $this->sendRequest('/lookup.php', ['i' => $id]);
     }
 
-    /**
-     * Send request to TheMealDB API
-     *
-     * @param string $endpoint API endpoint
-     * @param array $parameters Query parameters
-     * @return array Response data
-     */
     private function sendRequest(string $endpoint, array $parameters = []): array
     {
         try {
