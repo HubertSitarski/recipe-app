@@ -7,6 +7,7 @@ use App\Form\CommentType;
 use App\Repository\RecipeRepository;
 use App\Service\Comment\CommentService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -22,34 +23,27 @@ class RecipeDetailsController extends AbstractController
     #[Route('/recipe/{id}', name: 'app_recipe_show', methods: ['GET', 'POST'])]
     public function show(Request $request, int $id): Response
     {
-        // Find recipe with all relations loaded
         $recipe = $this->recipeRepository->findWithRelations($id);
 
         if (!$recipe) {
             throw new NotFoundHttpException('Recipe not found');
         }
 
-        // Create a new comment
         $comment = new Comment();
-        $comment->setRecipe($recipe);
 
-        $form = $this->createForm(CommentType::class, $comment);
-        $form->handleRequest($request);
+        $form = $this->getCommentForm($request, $comment);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Use comment service to add the comment
-            $this->commentService->addComment(
+            $this->commentService->addCommentToRecipe(
                 $recipe,
-                $comment->getContent()
+                $comment
             );
 
             $this->addFlash('success', 'Comment added successfully!');
 
-            // Redirect to the same page to prevent form resubmission
             return $this->redirectToRoute('app_recipe_show', ['id' => $id]);
         }
 
-        // Get the latest comments for this recipe
         $latestComments = $this->commentService->getLatestComments($id);
 
         return $this->render('recipe/show.html.twig', [
@@ -58,4 +52,13 @@ class RecipeDetailsController extends AbstractController
             'comments' => $latestComments,
         ]);
     }
+
+    private function getCommentForm(Request $request, Comment $comment): FormInterface
+    {
+        $form = $this->createForm(CommentType::class, $comment);
+        $form->handleRequest($request);
+
+        return $form;
+    }
+
 }

@@ -16,25 +16,25 @@
             {% for recipe in recipes %}
                 <div class="recipe-item">
                     <a href="{{ path('app_recipe_show', {'id': recipe.id}) }}">
+                        <h2>{{ recipe.title }}</h2>
                         {% if recipe.thumbnail %}
                             <img src="{{ recipe.thumbnail }}" alt="{{ recipe.title }}" width="200">
                         {% else %}
                             <div class="no-image">No image</div>
                         {% endif %}
-                        <h2>{{ recipe.title }}</h2>
                     </a>
-                    <div class="recipe-meta">
-                        {% if recipe.category %}
-                            <span class="category">{{ recipe.category }}</span>
-                        {% endif %}
-                        {% if recipe.area %}
-                            <span class="area">{{ recipe.area }}</span>
-                        {% endif %}
-                    </div>
+                    <br><br>
+                    <button class="favorite-button"
+                            data-recipe-id="{{ recipe.id }}"
+                            onclick="toggleFavorite({{ recipe.id }})">
+                        Add to favorites
+                    </button>
+                    <br>
                 </div>
-                <br>
             {% endfor %}
         </div>
+
+        <br>
 
         <div class="pagination">
             {# Previous page link #}
@@ -80,4 +80,8 @@
     {% else %}
         <p>No recipes found{% if current_search %} for "{{ current_search }}"{% endif %}.</p>
     {% endif %}
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/favorites.js') }}"></script>
 {% endblock %}

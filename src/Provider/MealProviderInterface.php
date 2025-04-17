@@ -22,4 +22,11 @@ interface MealProviderInterface
      * @return array Recipe data or empty array if not found
      */
     public function fetchById(string $id): array;
+
+    /**
+     * Get source of meal provider
+     *
+     * @return string
+     */
+    public function getSource(): string;
 }
