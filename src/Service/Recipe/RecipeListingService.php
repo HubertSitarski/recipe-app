@@ -23,6 +23,10 @@ class RecipeListingService
      */
     public function getRecipes(?string $searchTerm = null, int $page = 1, int $limit = 10): array
     {
+        if ($limit === 0) {
+            $limit = 10;
+        }
+
         // Normalize search term
         $searchTerm = $searchTerm ? trim($searchTerm) : null;
 
