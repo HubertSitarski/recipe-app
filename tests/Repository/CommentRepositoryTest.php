@@ -21,13 +21,11 @@ class CommentRepositoryTest extends KernelTestCase
             ->getManager();
         $this->commentRepository = $this->entityManager->getRepository(Comment::class);
         
-        // Start transaction for each test
         $this->entityManager->beginTransaction();
     }
     
     protected function tearDown(): void
     {
-        // Roll back transaction after each test
         if ($this->entityManager->getConnection()->isTransactionActive()) {
             $this->entityManager->rollback();
         }
@@ -61,12 +59,12 @@ class CommentRepositoryTest extends KernelTestCase
     public function testFindLatestByRecipeDefaultLimit(): void
     {
         $recipe = $this->createRecipe('Recipe with Many Comments');
-        $this->createCommentsForRecipe($recipe, 25); // Create 25 comments
+        $this->createCommentsForRecipe($recipe, 25);
         
         $comments = $this->commentRepository->findLatestByRecipe($recipe->getId());
         
         $this->assertCount(20, $comments);
-        $this->assertEquals('Comment 25', $comments[0]->getContent()); // Latest first
+        $this->assertEquals('Comment 25', $comments[0]->getContent());
     }
     
     /**

@@ -79,7 +79,7 @@ class RecipeRepositoryTest extends KernelTestCase
         $result = $this->recipeRepository->findByTitlePaginated('Pasta', 1, 2);
         
         $this->assertCount(2, $result['recipes']);
-        $this->assertEquals(3, $result['total']); // 3 pasta recipes total
+        $this->assertEquals(3, $result['total']);
     }
     
     public function testFindWithRelations(): void
@@ -97,7 +97,7 @@ class RecipeRepositoryTest extends KernelTestCase
     {
         foreach ($titles as $title) {
             $recipe = new Recipe();
-            $recipe->setExternalId('ext_' . md5($title)); // Unique external ID
+            $recipe->setExternalId('ext_' . md5($title));
             $recipe->setTitle($title);
             $recipe->setInstructions('Test instructions');
             $this->entityManager->persist($recipe);
