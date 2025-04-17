@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\Message\SynchronizeLetterRecipesMessage;
 use App\Service\Synchronization\RecipeSynchronizer;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -9,11 +10,13 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Scheduler\Attribute\AsPeriodicTask;
 
 #[AsCommand(
     name: 'app:recipes:synchronize',
     description: 'Synchronize recipes from TheMealDB API',
 )]
+#[AsPeriodicTask('20 seconds', schedule: 'default')]
 class SynchronizeRecipesCommand extends Command
 {
     public function __construct(
