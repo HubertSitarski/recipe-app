@@ -21,14 +21,6 @@ class RecipeRepository extends ServiceEntityRepository
         parent::__construct($registry, Recipe::class);
     }
 
-    /**
-     * Find recipes by title with pagination
-     *
-     * @param string|null $title Optional title filter
-     * @param int $page Current page
-     * @param int $limit Items per page
-     * @return array{total: int, recipes: array}
-     */
     public function findByTitlePaginated(?string $title = null, int $page = 1, int $limit = 10): array
     {
         $qb = $this->createQueryBuilder('r')
@@ -39,13 +31,11 @@ class RecipeRepository extends ServiceEntityRepository
                 ->setParameter('title', '%' . $title . '%');
         }
 
-        // Get total count for pagination
         $countQb = clone $qb;
         $total = $countQb->select('COUNT(r.id)')
             ->getQuery()
             ->getSingleScalarResult();
 
-        // Add pagination
         $recipes = $qb->setMaxResults($limit)
             ->setFirstResult(($page - 1) * $limit)
             ->getQuery()

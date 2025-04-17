@@ -12,10 +12,9 @@ class RecipeListingService
 
     public function getRecipes(?string $searchTerm = null, int $page = 1, int $limit = 10): array
     {
-        if ($limit === 0) {
-            $limit = 10;
-        }
+        $limit = $limit === 0 ? 10 : $limit;
 
+        dump($limit);
         $searchTerm = $searchTerm ? trim($searchTerm) : null;
 
         $result = $this->recipeRepository->findByTitlePaginated(

@@ -7,9 +7,6 @@ use App\Service\Synchronization\RecipeSynchronizer;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-/**
- * Handler for processing synchronization of recipes for a specific letter
- */
 #[AsMessageHandler]
 final class SynchronizeLetterRecipesHandler
 {

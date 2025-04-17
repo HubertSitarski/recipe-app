@@ -2,9 +2,6 @@
 
 namespace App\DTO;
 
-/**
- * Implementation of RecipeData for TheMealDB API
- */
 class TheMealDbRecipeData implements RecipeData
 {
     private const INGREDIENTS_AMOUNT = 20;
@@ -12,18 +9,12 @@ class TheMealDbRecipeData implements RecipeData
     private array $data;
     private array $ingredients = [];
 
-    /**
-     * @param array $data Raw data from TheMealDB API
-     */
     public function __construct(array $data)
     {
         $this->data = $data;
         $this->extractIngredients();
     }
 
-    /**
-     * Extract ingredients and their measurements from raw data
-     */
     private function extractIngredients(): void
     {
         for ($i = 1; $i <= static::INGREDIENTS_AMOUNT; $i++) {

@@ -185,9 +185,6 @@ class Recipe
         return $this->updatedAt;
     }
 
-    /**
-     * @return Collection<int, RecipeIngredient>
-     */
     public function getIngredients(): Collection
     {
         return $this->ingredients;
@@ -214,9 +211,6 @@ class Recipe
         return $this;
     }
 
-    /**
-     * @return Collection<int, Comment>
-     */
     public function getComments(): Collection
     {
         return $this->comments;

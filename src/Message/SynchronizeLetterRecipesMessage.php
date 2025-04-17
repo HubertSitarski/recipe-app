@@ -2,9 +2,6 @@
 
 namespace App\Message;
 
-/**
- * Message to trigger synchronization of recipes for a specific letter
- */
 final class SynchronizeLetterRecipesMessage
 {
     public function __construct(
