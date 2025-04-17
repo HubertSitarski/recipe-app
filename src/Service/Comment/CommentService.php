@@ -17,18 +17,9 @@ class CommentService
         private readonly CommentRepository $commentRepository
     ) {}
 
-    /**
-     * Add a new comment to a recipe
-     *
-     * @param Recipe $recipe The recipe to comment on
-     * @param string $content Comment content
-     * @return Comment The created comment
-     */
-    public function addComment(Recipe $recipe, string $content): Comment
+    public function addCommentToRecipe(Recipe $recipe, Comment $comment): Comment
     {
-        $comment = new Comment();
         $comment->setRecipe($recipe);
-        $comment->setContent($content);
 
         $this->entityManager->persist($comment);
         $this->entityManager->flush();

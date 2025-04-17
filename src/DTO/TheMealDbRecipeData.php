@@ -80,12 +80,4 @@ class TheMealDbRecipeData implements RecipeData
     {
         return $this->ingredients;
     }
-
-    /**
-     * Get the original raw data from TheMealDB
-     */
-    public function getRawData(): array
-    {
-        return $this->data;
-    }
-} 
+}

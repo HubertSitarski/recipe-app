@@ -29,7 +29,7 @@ class RecipeManager
 
         $this->setEntityProperties($recipe, $data);
 
-        $this->ingredientManager->processIngredients($recipe, $data);
+        $this->ingredientManager->createIngredients($recipe, $data);
 
         return $recipe;
     }
@@ -44,14 +44,10 @@ class RecipeManager
     public function updateEntity(Recipe $recipe, RecipeData $data): Recipe
     {
         $this->setEntityProperties($recipe, $data);
-
-        // Remove existing ingredients to replace with new ones
-        foreach ($recipe->getIngredients() as $ingredient) {
-            $recipe->removeIngredient($ingredient);
-        }
-
-        $this->ingredientManager->processIngredients($recipe, $data);
-
+        
+        // Update ingredients only if they've changed
+        $this->ingredientManager->updateIngredients($recipe, $data);
+        
         return $recipe;
     }
 
@@ -59,10 +55,10 @@ class RecipeManager
     {
         $recipe->setTitle($data->getTitle());
         $recipe->setInstructions($data->getInstructions());
-        $recipe->setCategory($data->getCategory() ?? null);
-        $recipe->setArea($data->getArea() ?? null);
-        $recipe->setThumbnail($data->getThumbnail() ?? null);
-        $recipe->setTags($data->getTags() ?? null);
-        $recipe->setYoutubeUrl($data->getYoutubeUrl() ?? null);
+        $recipe->setCategory($data->getCategory());
+        $recipe->setArea($data->getArea());
+        $recipe->setThumbnail($data->getThumbnail());
+        $recipe->setTags($data->getTags());
+        $recipe->setYoutubeUrl($data->getYoutubeUrl());
     }
 }

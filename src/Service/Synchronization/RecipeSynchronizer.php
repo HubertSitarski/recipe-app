@@ -61,6 +61,7 @@ class RecipeSynchronizer
 
         foreach ($recipesData as $recipeData) {
             $recipeDataDTO = $this->recipeDataFactory->createFromSource($recipeData, $this->mealProvider->getSource());
+
             try {
                 $this->processRecipe($recipeDataDTO);
                 $count++;

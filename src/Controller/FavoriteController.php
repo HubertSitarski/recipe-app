@@ -16,8 +16,6 @@ class FavoriteController extends AbstractController
     #[Route('/favorites', name: 'app_favorite_index', methods: ['GET'])]
     public function index(): Response
     {
-        // Get all recipes
-        // They will be filtered on the client side using JavaScript
         $recipes = $this->recipeRepository->findAll();
 
         return $this->render('favorite/index.html.twig', [
