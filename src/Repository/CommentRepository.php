@@ -34,6 +34,7 @@ class CommentRepository extends ServiceEntityRepository
             ->andWhere('c.recipe = :recipeId')
             ->setParameter('recipeId', $recipeId)
             ->orderBy('c.createdAt', 'DESC')
+            ->addOrderBy('c.id', 'DESC')
             ->setMaxResults($limit)
             ->getQuery()
             ->getResult();
