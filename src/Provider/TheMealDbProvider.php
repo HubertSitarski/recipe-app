@@ -2,13 +2,13 @@
 
 namespace App\Provider;
 
+use App\Enum\MealProviderSource;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Psr\Log\LoggerInterface;
 
 class TheMealDbProvider implements MealProviderInterface
 {
     private const BASE_URL = 'https://www.themealdb.com/api/json/v1/1';
-    private const SOURCE = 'themealdb';
 
     public function __construct(
         private readonly HttpClientInterface $httpClient,
@@ -52,6 +52,6 @@ class TheMealDbProvider implements MealProviderInterface
 
     public function getSource(): string
     {
-        return static::SOURCE;
+        return MealProviderSource::THEMEALDB->value;
     }
 }
