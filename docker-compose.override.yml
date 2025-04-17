@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  php:
+    environment:
+      APP_ENV: dev
+      XDEBUG_MODE: ${XDEBUG_MODE:-off}
+    volumes:
+      - ./:/var/www/symfony:cached
+
+  database:
+    ports:
+      - "33066:3306"
+
+  test_database:
+    ports:
+      - "3307:3306"
+
+  # Add phpmyadmin for database management
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      PMA_HOST: database
+      PMA_USER: root
+      PMA_PASSWORD: root
+    ports:
+      - "8081:80"
+    depends_on:
+      - database
+      - test_database 
