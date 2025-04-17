@@ -71,7 +71,7 @@ class RecipeListingServiceTest extends TestCase
         $page = 2;
         $limit = 5;
         $mockRecipes = $this->createMockRecipes(5);
-        $total = 12; // Total recipes in system
+        $total = 12;
         
         $this->recipeRepository
             ->expects($this->once())
@@ -86,7 +86,7 @@ class RecipeListingServiceTest extends TestCase
 
         $this->assertCount(5, $result['recipes']);
         $this->assertEquals($total, $result['total']);
-        $this->assertEquals(3, $result['lastPage']); // ceil(12/5) = 3
+        $this->assertEquals(3, $result['lastPage']);
     }
 
     public function testGetRecipesWithEmptyResults(): void
@@ -108,12 +108,12 @@ class RecipeListingServiceTest extends TestCase
 
         $this->assertEmpty($result['recipes']);
         $this->assertEquals(0, $result['total']);
-        $this->assertEquals(1, $result['lastPage']); // Minimum is 1
+        $this->assertEquals(1, $result['lastPage']);
     }
 
     public function testSearchTermNormalization(): void
     {
-        $searchTerm = '  pasta  '; // With extra spaces
+        $searchTerm = '  pasta  ';
         $normalizedSearchTerm = 'pasta';
         $page = 1;
         $limit = 10;
@@ -143,7 +143,7 @@ class RecipeListingServiceTest extends TestCase
         $this->recipeRepository
             ->expects($this->once())
             ->method('findByTitlePaginated')
-            ->with(null, $page, $limit) // Should convert empty string to null
+            ->with(null, $page, $limit)
             ->willReturn([
                 'recipes' => $mockRecipes,
                 'total' => count($mockRecipes),

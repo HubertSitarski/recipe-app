@@ -14,7 +14,6 @@ class RecipeListingService
     {
         $limit = $limit === 0 ? 10 : $limit;
 
-        dump($limit);
         $searchTerm = $searchTerm ? trim($searchTerm) : null;
 
         $result = $this->recipeRepository->findByTitlePaginated(
