@@ -27,13 +27,6 @@ class CommentService
         return $comment;
     }
 
-    /**
-     * Get latest comments for a recipe
-     *
-     * @param Recipe|int $recipe Recipe entity or ID
-     * @param int $limit Maximum number of comments to retrieve
-     * @return Comment[] Array of comments
-     */
     public function getLatestComments(Recipe|int $recipe, int $limit = 20): array
     {
         $recipeId = $recipe instanceof Recipe ? $recipe->getId() : $recipe;

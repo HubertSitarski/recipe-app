@@ -21,13 +21,11 @@ class RecipeIngredientRepositoryTest extends KernelTestCase
             ->getManager();
         $this->recipeIngredientRepository = $this->entityManager->getRepository(RecipeIngredient::class);
         
-        // Start transaction for each test
         $this->entityManager->beginTransaction();
     }
     
     protected function tearDown(): void
     {
-        // Roll back transaction after each test
         if ($this->entityManager->getConnection()->isTransactionActive()) {
             $this->entityManager->rollback();
         }
@@ -37,13 +35,10 @@ class RecipeIngredientRepositoryTest extends KernelTestCase
     
     public function testFindByRecipe(): void
     {
-        // Arrange
         $recipe = $this->createRecipeWithIngredients();
         
-        // Act
         $ingredients = $this->recipeIngredientRepository->findBy(['recipe' => $recipe]);
         
-        // Assert
         $this->assertCount(3, $ingredients);
         $ingredientNames = array_map(fn(RecipeIngredient $i) => $i->getName(), $ingredients);
         $this->assertContains('Flour', $ingredientNames);
@@ -53,16 +48,13 @@ class RecipeIngredientRepositoryTest extends KernelTestCase
     
     public function testFindOneByNameAndRecipe(): void
     {
-        // Arrange
         $recipe = $this->createRecipeWithIngredients();
         
-        // Act
         $ingredient = $this->recipeIngredientRepository->findOneBy([
             'recipe' => $recipe,
             'name' => 'Sugar'
         ]);
         
-        // Assert
         $this->assertNotNull($ingredient);
         $this->assertEquals('Sugar', $ingredient->getName());
         $this->assertEquals('100g', $ingredient->getMeasure());
@@ -70,20 +62,14 @@ class RecipeIngredientRepositoryTest extends KernelTestCase
     
     public function testFindAll(): void
     {
-        // Arrange
         $this->createRecipeWithIngredients('Recipe 1');
         $this->createRecipeWithIngredients('Recipe 2');
         
-        // Act
         $allIngredients = $this->recipeIngredientRepository->findAll();
         
-        // Assert
         $this->assertCount(6, $allIngredients); // 3 ingredients for each recipe
     }
-    
-    /**
-     * Helper method to create a recipe with ingredients
-     */
+
     private function createRecipeWithIngredients(string $title = 'Test Recipe'): Recipe
     {
         $recipe = new Recipe();

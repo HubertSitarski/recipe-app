@@ -174,9 +174,6 @@ class RecipeListingServiceTest extends TestCase
         $this->assertCount(10, $result['recipes']);
     }
 
-    /**
-     * Helper method to create mock Recipe objects
-     */
     private function createMockRecipes(int $count): array
     {
         $recipes = [];

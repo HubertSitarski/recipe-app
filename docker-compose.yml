@@ -8,11 +8,6 @@ services:
       dockerfile: Dockerfile
     volumes:
       - .:/var/www/symfony
-    depends_on:
-      - database
-    environment:
-      - APP_ENV=${APP_ENV:-dev}
-      - DATABASE_URL=mysql://app:asdf123@database:3306/app?serverVersion=11.1.2-MariaDB&charset=utf8mb4
 
   # Nginx service
   nginx:
