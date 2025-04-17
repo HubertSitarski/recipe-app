@@ -1,41 +1,19 @@
-/**
- * JavaScript for handling favorite recipes with localStorage
- */
-
-// LocalStorage key for favorites
 const FAVORITES_STORAGE_KEY = 'recipe_app_favorites';
 
-/**
- * Get favorite recipe IDs from localStorage
- * @returns {number[]} Array of recipe IDs
- */
 function getFavoriteRecipes() {
     const favorites = localStorage.getItem(FAVORITES_STORAGE_KEY);
     return favorites ? JSON.parse(favorites) : [];
 }
 
-/**
- * Save favorite recipe IDs to localStorage
- * @param {number[]} favorites Array of recipe IDs
- */
 function saveFavoriteRecipes(favorites) {
     localStorage.setItem(FAVORITES_STORAGE_KEY, JSON.stringify(favorites));
 }
 
-/**
- * Check if a recipe is in favorites
- * @param {number} recipeId Recipe ID to check
- * @returns {boolean} True if in favorites
- */
 function isRecipeFavorite(recipeId) {
     const favorites = getFavoriteRecipes();
     return favorites.includes(Number(recipeId));
 }
 
-/**
- * Add a recipe to favorites
- * @param {number} recipeId Recipe ID to add
- */
 function addToFavorites(recipeId) {
     const favorites = getFavoriteRecipes();
     recipeId = Number(recipeId);
@@ -45,14 +23,9 @@ function addToFavorites(recipeId) {
         saveFavoriteRecipes(favorites);
     }
 
-    // Update UI
     updateFavoriteButtons();
 }
 
-/**
- * Remove a recipe from favorites
- * @param {number} recipeId Recipe ID to remove
- */
 function removeFromFavorites(recipeId) {
     const favorites = getFavoriteRecipes();
     recipeId = Number(recipeId);
@@ -63,10 +36,8 @@ function removeFromFavorites(recipeId) {
         saveFavoriteRecipes(favorites);
     }
 
-    // Update UI
     updateFavoriteButtons();
 
-    // If on favorites page, hide the removed recipe
     const recipesContainer = document.getElementById('favorites-container');
     if (recipesContainer) {
         const recipeElement = document.querySelector(`.recipe-item[data-recipe-id="${recipeId}"]`);
@@ -74,15 +45,10 @@ function removeFromFavorites(recipeId) {
             recipeElement.style.display = 'none';
         }
 
-        // Check if any favorites left
         updateFavoritesMessage();
     }
 }
 
-/**
- * Toggle favorite status for a recipe
- * @param {number} recipeId Recipe ID to toggle
- */
 function toggleFavorite(recipeId) {
     recipeId = Number(recipeId);
 
@@ -93,9 +59,6 @@ function toggleFavorite(recipeId) {
     }
 }
 
-/**
- * Update all favorite buttons to reflect current state
- */
 function updateFavoriteButtons() {
     const favoriteButtons = document.querySelectorAll('.favorite-button');
 
@@ -112,16 +75,12 @@ function updateFavoriteButtons() {
     });
 }
 
-/**
- * Initialize favorites page
- */
 function initFavoritesPage() {
     const favoritesContainer = document.getElementById('favorites-container');
     if (!favoritesContainer) return; // Not on favorites page
 
     const favorites = getFavoriteRecipes();
 
-    // Show only favorite recipes
     const recipeItems = document.querySelectorAll('.recipe-item');
     let visibleCount = 0;
 
@@ -136,19 +95,14 @@ function initFavoritesPage() {
         }
     });
 
-    // Update message
     updateFavoritesMessage(visibleCount);
 }
 
-/**
- * Update message on favorites page
- */
 function updateFavoritesMessage(visibleCount = null) {
     const messageElement = document.getElementById('favorites-message');
     if (!messageElement) return;
 
     if (visibleCount === null) {
-        // Count visible recipes
         const visibleRecipes = document.querySelectorAll('.recipe-item[style="display: block;"]');
         visibleCount = visibleRecipes.length;
     }
@@ -161,11 +115,8 @@ function updateFavoritesMessage(visibleCount = null) {
     }
 }
 
-// Initialize on page load
 document.addEventListener('DOMContentLoaded', function() {
-    // Update favorite buttons on recipe detail page
     updateFavoriteButtons();
 
-    // Initialize favorites page if we're on that page
     initFavoritesPage();
 });
