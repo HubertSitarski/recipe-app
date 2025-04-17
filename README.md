@@ -1,6 +1,6 @@
 # Recipe App - TheMealDB Synchronizer
 
-This application is a solution for synchronizing and displaying recipes from TheMealDB API. It provides a user-friendly interface to browse, search, and view detailed information about various recipes.
+This application is a solution for synchronizing and displaying recipes from TheMealDB API. It provides a simple interface to browse, search, and view detailed information about various recipes.
 
 ## System Requirements
 
@@ -22,11 +22,11 @@ cd recipe-app
 ### 2. Configure Docker environment
 
 The project comes with a Docker setup that includes:
-- PHP service
-- Nginx web server
-- MariaDB database
+- PHP Service
+- Nginx Web Server
+- MariaDB Database
 - phpMyAdmin
-- Test database
+- Test Database
 
 Run the Docker environment:
 
@@ -36,7 +36,7 @@ docker-compose up -d
 
 ### 3. Install dependencies
 
-Enter the PHP container and install dependencies:
+Install dependencies using docker container:
 
 ```bash
 docker-compose exec php composer install
@@ -86,21 +86,21 @@ docker-compose exec php bin/phpunit
 
 The application synchronizes recipes from TheMealDB API in time intervals. To start the synchronization process, run:
 
-The first synchronization will happen after default interval - 1 hour
-
 ```bash
 docker-compose exec php bin/console messenger:consume -vv scheduler_default async
 ```
+> The first synchronization will happen after default interval - 1 hour
 
 This will process the async messages and scheduler tasks that fetch recipes from TheMealDB.
 
+### Manual synchronization
 You can also trigger a manual synchronization with:
 
 ```bash
 docker-compose exec php bin/console app:recipes:synchronize
 ```
 
-Then:
+Then run:
 
 ```bash
 docker-compose exec php bin/console messenger:consume -vv scheduler_default async
@@ -142,7 +142,7 @@ docker-compose exec php bin/console messenger:consume -vv scheduler_default asyn
 ### User Interaction
 - Comment system for recipes
 - Favorite recipes functionality
-- User-friendly interface
+- Simple interface
 
 ## Usage Examples
 
