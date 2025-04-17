@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}My Favorite Recipes{% endblock %}
+
+{% block body %}
+    <h1>My Favorite Recipes</h1>
+
+    <div id="favorites-message" class="message">
+        <p>Loading your favorite recipes...</p>
+    </div>
+
+    <div id="favorites-container" class="recipe-list">
+        <div class="actions">
+            <a href="{{ path('app_recipe_index') }}" class="back-button">Back to all recipes</a>
+        </div>
+
+        {% for recipe in recipes %}
+            <div class="recipe-item favorite-recipe" data-recipe-id="{{ recipe.id }}" style="display: none;">
+                <a href="{{ path('app_recipe_show', {'id': recipe.id}) }}">
+                    <h2>{{ recipe.title }}</h2>
+                    {% if recipe.thumbnail %}
+                        <img src="{{ recipe.thumbnail }}" alt="{{ recipe.title }}" width="200">
+                    {% else %}
+                        <div class="no-image">No image</div>
+                    {% endif %}
+                    <br><br>
+                </a>
+                <div class="recipe-meta">
+                    {% if recipe.category %}
+                        <span class="category">{{ recipe.category }}</span>
+                        <br>
+                    {% endif %}
+                    {% if recipe.area %}
+                        <span class="area">{{ recipe.area }}</span>
+                        <br>
+                    {% endif %}
+                </div>
+                <br>
+                <button class="remove-favorite-button"
+                        data-recipe-id="{{ recipe.id }}"
+                        onclick="removeFromFavorites({{ recipe.id }})">
+                    Remove from favorites
+                </button>
+                <br>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/favorites.js') }}"></script>
+{% endblock %}

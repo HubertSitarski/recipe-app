@@ -16,6 +16,9 @@ framework:
     #fragments: true
     php_errors:
         log: true
+    assets:
+        # Base path for assets (used for asset() function)
+        base_path: '/'
 
 when@test:
     framework:

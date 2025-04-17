@@ -1,0 +1,87 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Recipes{% endblock %}
+
+{% block body %}
+    <h1>Recipes</h1>
+
+    <div class="search-form">
+        {{ include('recipe/_search_form.html.twig') }}
+    </div>
+
+    {% if total_recipes > 0 %}
+        <p>Showing {{ recipes|length }} of {{ total_recipes }} recipes</p>
+
+        <div class="recipe-list">
+            {% for recipe in recipes %}
+                <div class="recipe-item">
+                    <a href="{{ path('app_recipe_show', {'id': recipe.id}) }}">
+                        <h2>{{ recipe.title }}</h2>
+                        {% if recipe.thumbnail %}
+                            <img src="{{ recipe.thumbnail }}" alt="{{ recipe.title }}" width="200">
+                        {% else %}
+                            <div class="no-image">No image</div>
+                        {% endif %}
+                    </a>
+                    <br><br>
+                    <button class="favorite-button"
+                            data-recipe-id="{{ recipe.id }}"
+                            onclick="toggleFavorite({{ recipe.id }})">
+                        Add to favorites
+                    </button>
+                    <br>
+                </div>
+            {% endfor %}
+        </div>
+
+        <br>
+
+        <div class="pagination">
+            {# Previous page link #}
+            {% if current_page > 1 %}
+                <a href="{{ path('app_recipe_index', {page: current_page - 1, search: current_search, limit: limit}) }}">Previous</a>
+            {% else %}
+                <span class="disabled">Previous</span>
+            {% endif %}
+
+            {# Page numbers #}
+            {% set startPage = max(1, current_page - 2) %}
+            {% set endPage = min(last_page, current_page + 2) %}
+
+            {% if startPage > 1 %}
+                <a href="{{ path('app_recipe_index', {page: 1, search: current_search, limit: limit}) }}">1</a>
+                {% if startPage > 2 %}
+                    <span>...</span>
+                {% endif %}
+            {% endif %}
+
+            {% for page in startPage..endPage %}
+                {% if page == current_page %}
+                    <span class="current">{{ page }}</span>
+                {% else %}
+                    <a href="{{ path('app_recipe_index', {page: page, search: current_search, limit: limit}) }}">{{ page }}</a>
+                {% endif %}
+            {% endfor %}
+
+            {% if endPage < last_page %}
+                {% if endPage < last_page - 1 %}
+                    <span>...</span>
+                {% endif %}
+                <a href="{{ path('app_recipe_index', {page: last_page, search: current_search, limit: limit}) }}">{{ last_page }}</a>
+            {% endif %}
+
+            {# Next page link #}
+            {% if current_page < last_page %}
+                <a href="{{ path('app_recipe_index', {page: current_page + 1, search: current_search, limit: limit}) }}">Next</a>
+            {% else %}
+                <span class="disabled">Next</span>
+            {% endif %}
+        </div>
+    {% else %}
+        <p>No recipes found{% if current_search %} for "{{ current_search }}"{% endif %}.</p>
+    {% endif %}
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/favorites.js') }}"></script>
+{% endblock %}

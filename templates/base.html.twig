@@ -1,17 +1,32 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
-        {% block stylesheets %}
-        {% endblock %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Recipe App{% endblock %}</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>🍽️</text></svg>">
+    {% block stylesheets %}{% endblock %}
+</head>
+<body>
+<header>
+    <h1><a href="{{ path('app_recipe_index') }}">Recipe App</a></h1>
+    <nav>
+        <ul>
+            <li><a href="{{ path('app_recipe_index') }}">Home</a></li>
+            <li><a href="{{ path('app_recipe_index') }}">Recipes</a></li>
+            <li><a href="{{ path('app_favorite_index') }}">Favorites</a></li>
+        </ul>
+    </nav>
+</header>
 
-        {% block javascripts %}
-            {% block importmap %}{{ importmap('app') }}{% endblock %}
-        {% endblock %}
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-    </body>
+<main>
+    {% block body %}{% endblock %}
+</main>
+
+<footer>
+    <p>Recipe App &copy; {{ "now"|date("Y") }}</p>
+</footer>
+
+{% block javascripts %}{% endblock %}
+</body>
 </html>

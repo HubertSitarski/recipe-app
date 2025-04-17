@@ -1,0 +1,33 @@
+<div class="comments-section">
+    <h2>Comments</h2>
+
+    <div class="comment-form">
+        <h3>Add your comment</h3>
+        {{ form_start(comment_form) }}
+        {{ form_widget(comment_form.content) }}
+        {{ form_errors(comment_form.content) }}
+        <br>
+        <br>
+        {{ form_row(comment_form.submit) }}
+        {{ form_end(comment_form) }}
+    </div>
+
+    <div class="comments-list">
+        <h3>Latest comments ({{ comments|length }})</h3>
+
+        {% if comments|length > 0 %}
+            <ul class="comments">
+                {% for comment in comments %}
+                    <li class="comment">
+                        <div class="comment-content">{{ comment.content }}</div>
+                        <div class="comment-date">
+                            Posted on {{ comment.createdAt|date('Y-m-d H:i') }}
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="no-comments">No comments yet. Be the first to share your thoughts!</p>
+        {% endif %}
+    </div>
+</div>
