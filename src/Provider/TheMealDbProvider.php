@@ -38,7 +38,6 @@ class TheMealDbProvider implements MealProviderInterface
 
             $content = $response->toArray();
 
-            // TheMealDB returns null for meals when nothing is found
             return $content['meals'] ?? [];
 
         } catch (\Exception $e) {

@@ -2,9 +2,6 @@
 
 namespace App\DTO;
 
-/**
- * Interface for recipe data transfer objects
- */
 interface RecipeData
 {
     public function getExternalId(): string;
@@ -23,8 +20,5 @@ interface RecipeData
 
     public function getYoutubeUrl(): ?string;
 
-    /**
-     * @return array<string, string> Array of ingredients with measurements
-     */
     public function getIngredients(): array;
 } 

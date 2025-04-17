@@ -28,7 +28,6 @@ class RecipeManager
     {
         $this->setEntityProperties($recipe, $data);
         
-        // Update ingredients only if they've changed
         $this->ingredientManager->updateIngredients($recipe, $data);
         
         return $recipe;

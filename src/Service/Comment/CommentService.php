@@ -7,9 +7,6 @@ use App\Entity\Recipe;
 use App\Repository\CommentRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
-/**
- * Service for managing recipe comments
- */
 class CommentService
 {
     public function __construct(

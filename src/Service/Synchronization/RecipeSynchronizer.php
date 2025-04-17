@@ -24,12 +24,8 @@ class RecipeSynchronizer
         private readonly LoggerInterface $logger
     ) {}
 
-    /**
-     * Dispatch synchronization messages for all alphabet letters
-     */
     public function dispatchSynchronizeForAllLetters(): void
     {
-        // Dispatch synchronization for each letter of the alphabet
         foreach (range('a', 'z') as $letter) {
             $this->messageBus->dispatch(new SynchronizeLetterRecipesMessage($letter));
         }

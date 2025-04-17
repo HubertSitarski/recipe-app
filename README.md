@@ -39,7 +39,7 @@ docker-compose up -d
 Enter the PHP container and install dependencies:
 
 ```bash
-docker-compose exec php bin/console composer install
+docker-compose exec php composer install
 ```
 
 ### 4. Set up the database
@@ -74,7 +74,7 @@ The application should be accessible at:
 - Web application: http://localhost:8080
 - phpMyAdmin: http://localhost:8081
 
-### 6. Run tests
+## Testing
 
 Run PhpUnit tests:
 
@@ -130,7 +130,7 @@ docker-compose exec php bin/console messenger:consume -vv scheduler_default asyn
 
 ### Recipe Browsing
 - Paginated list of all recipes
-- Search functionality by recipe name/keywords
+- Search functionality by recipe name
 - Category filtering
 
 ### Recipe Details
